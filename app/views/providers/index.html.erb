@@ -1,0 +1,19 @@
+<% if current_user.user? %>
+  <h2>Browse Providers</h2>
+  <%= form_with url: providers_path, method: :get, local: true do %>
+    <div>
+      <%= select_tag :service_type, options_from_collection_for_select(@providers, :id, :service_type, selected: params[:service_type]), prompt: "Filter by Service Type" %>
+    </div>
+    <%= submit_tag "Filter", class: "btn-primary" %>
+  <% end %>
+
+  <% @providers&.each do |provider| %>
+    <div class="provider-card">
+      <h3><%= provider.user.name %></h3>
+      <p>Service: <%= provider.service_type if provider.service_type %></p>
+      <p>Location: <%= provider.location %></p>
+      <p>Hourly Rate: <%= provider.hourly_rate %> RON</p>
+      <%= link_to "View Profile", provider_path(provider) %>
+    </div>
+  <% end %>
+<% end %>
