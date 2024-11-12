@@ -364,9 +364,9 @@ DEPENDENCIES
   rails (~> 7.1.4, >= 7.1.4.2)
   selenium-webdriver
   sprockets-rails
-  standard (= 1.41.1)
+  standard (~> 1.41, >= 1.41.1)
   stimulus-rails
-  stripe (= 13.1.1)
+  stripe (~> 13.1, >= 13.1.1)
   tailwindcss-rails
   turbo-rails
   tzinfo-data

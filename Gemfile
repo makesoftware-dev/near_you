@@ -69,8 +69,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem 'stripe', '13.1.1'
+gem 'stripe', '~> 13.1', '>= 13.1.1'
 gem 'devise', '4.9.4'
-gem 'standard', '1.41.1'
+gem 'standard', '~> 1.41', '>= 1.41.1'
 gem 'pundit'
 gem 'avo'

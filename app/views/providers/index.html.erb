@@ -8,12 +8,15 @@
   <% end %>
 
   <% @providers&.each do |provider| %>
-    <div class="provider-card">
-      <h3><%= provider.user.name %></h3>
-      <p>Service: <%= provider.service_type if provider.service_type %></p>
-      <p>Location: <%= provider.location %></p>
-      <p>Hourly Rate: <%= provider.hourly_rate %> RON</p>
-      <%= link_to "View Profile", provider_path(provider) %>
+    <div class="provider-card flex items-center space-x-4 p-4 border rounded-lg mb-4">
+      <%= image_tag gravatar_url(provider.user.email, 50), class: "rounded-full w-12 h-12 object-cover" %>
+      <div>
+        <h3><%= provider.user.name %></h3>
+        <p>Service: <%= provider.service_type if provider.service_type %></p>
+        <p>Location: <%= provider.location %></p>
+        <p>Hourly Rate: <%= provider.hourly_rate %> RON</p>
+        <%= link_to "View Profile", provider_path(provider) %>
+      </div>
     </div>
   <% end %>
 <% end %>
