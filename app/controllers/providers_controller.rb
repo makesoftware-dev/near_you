@@ -10,10 +10,11 @@ class ProvidersController < ApplicationController
         redirect_to new_provider_path, "Please complete you provider profile"
       end
     else
-      @service_type = Provider.distinct.pluck(:service_type)
+      @service_types = Provider.distinct.service_types.values
       @providers = Provider.includes(:user)
       if params[:service_type].present?
         @providers = @providers.where(service_type: params[:service_type])
+        
       end
     end
   end
@@ -27,6 +28,11 @@ class ProvidersController < ApplicationController
 end
   
   def create
+    if current_user.provider
+      redirect_to provider_path(current_user.provider), alert: "You already have a provider profile"
+      return
+    end
+
     @provider = Provider.new(provider_params)
     @provider.user = current_user
     
