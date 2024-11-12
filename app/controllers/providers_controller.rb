@@ -71,6 +71,6 @@ end
   
   private
   def provider_params
-    params.require(:provider).permit(:id,:service_type, :experience, :hourly_rate, :bio, :rating, :location, :name)
+    params.require(:provider).permit(:id,:service_type, :experience, :hourly_rate, :bio, :rating, :location, :name, :calendly_url)
   end
 end

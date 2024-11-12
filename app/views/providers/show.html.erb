@@ -5,39 +5,40 @@
     <h1 class="text-3xl font-bold text-gray-900"><%= @provider.user.name %></h1>
     <p class="text-lg text-gray-600"><%= @provider.service_type %></p>
   </div>
-
   <div class="grid grid-cols-2 gap-4 mb-6">
     <div class="text-gray-600">
       <p class="font-semibold">Location:</p>
       <p><%= @provider.location %></p>
     </div>
-    
     <div class="text-gray-600">
       <p class="font-semibold">Experience:</p>
       <p><%= @provider.experience %> years</p>
     </div>
-    
     <div class="text-gray-600">
       <p class="font-semibold">Hourly Rate:</p>
       <p><%= @provider.hourly_rate %> RON</p>
     </div>
-    
     <div class="text-gray-600">
       <p class="font-semibold">Rating:</p>
       <p><%= @provider.rating ? "#{@provider.rating}/5" : "No ratings yet" %></p>
     </div>
   </div>
-
   <div class="mb-6">
     <h2 class="text-xl font-semibold text-gray-900 mb-2">About</h2>
     <p class="text-gray-600"><%= @provider.bio %></p>
   </div>
 
   <div class="flex justify-between items-center">
-
     <% if current_user == @provider.user %>
       <%= link_to "Edit Profile", edit_provider_path(@provider), 
           class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+    <%else%>
+      <% if @provider.calendly_url.present?%>
+      <%= link_to "Book an Appointment", @provider.calendly_url, 
+        class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded", target: "_blank" %>
+        <%else%>
+          <p class= "text-gray-600">This provider has not set up a booking link yet. </p>
+        <%end%>
     <% end %>
   </div>
 </div>
