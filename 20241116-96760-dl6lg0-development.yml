@@ -1,0 +1,7 @@
+stripe:
+	pk: "pk_test_51PtUIoKhoiIp4R7lNYaOiIOYSboKDSxfAwnL6ugMxLSth166wpt9aWT1oXfSilYQADFUEBuxF1SSuN9HhW4XMm6p00U7A7YA5D"
+	sk: "sk_test_51PtUIoKhoiIp4R7lLd1mERw7m4trsLvbd3LiNkLvHiXOPXdkDw3LAVFbyRFwOCqOj6z7kNB2G72yjDL83iPwoQNN00Lqd1XIt9"
+
+# aws:
+#   access_key_id: 123
+#   secret_access_key: 345

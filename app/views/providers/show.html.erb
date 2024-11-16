@@ -36,9 +36,28 @@
       <% if @provider.calendly_url.present?%>
       <%= link_to "Book an Appointment", @provider.calendly_url, 
         class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded", target: "_blank" %>
+        
+        
+        <%= button_to "Pay", appointments_path(appointment_time: Time.now, provider_id: @provider.id),
+    method: :post,
+    class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
+    data: { turbo: false } %>
+        
+        
         <%else%>
           <p class= "text-gray-600">This provider has not set up a booking link yet. </p>
         <%end%>
     <% end %>
   </div>
+
+  <% if current_user != @provider.user %>
+    <div 
+      data-controller="calendly"
+      data-calendly-url="<%= @provider.calendly_url %>"
+      data-user-name="<%= current_user.name %>"
+      data-user-email="<%= current_user.email %>"
+      data-provider-id="<%= @provider.id %>"
+      style="min-height: 700px;">
+    </div>
+  <% end %>
 </div>

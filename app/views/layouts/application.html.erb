@@ -8,12 +8,14 @@
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "https://js.stripe.com/v3/"%>
+    <script src="https://assets.calendly.com/assets/external/widget.js"></script>
   </head>
   <body>
     <nav class="bg-white shadow-lg mb-8">
       <div class="max-w-6xl mx-auto px-4 py-3">
         <div class="flex justify-between items-center">
-          <h1 class="text-2xl font-bold text-blue-500">Near You</h1>
+          <%= link_to  "Near You", root_path, class:"text-2xl font-bold text-blue-500"%>
           
           <div class="flex items-center space-x-4">
             <% if user_signed_in? %>
