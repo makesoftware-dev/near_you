@@ -3,9 +3,11 @@ class AppointmentsController < ApplicationController
 
   def index
     @appointments = if current_user.provider?
-      current_user.provider.appointments.where(status: :confirmed)
+      # current_user.provider.appointments.where(status: :confirmed)
+      current_user.provider.appointments
     else
-      current_user.appointments.where(status: :confirmed)
+      # current_user.appointments.where(status: :confirmed)
+      current_user.appointments
     end
   end
 

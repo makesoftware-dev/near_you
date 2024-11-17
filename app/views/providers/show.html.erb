@@ -2,7 +2,7 @@
   <div class="text-center mb-6">
     <%= image_tag gravatar_url(@provider.user.email), 
         class: "mx-auto mb-4 rounded-full w-32 h-32 object-cover shadow-lg" %>
-    <h1 class="text-3xl font-bold text-gray-900"><%= @provider.user.name %></h1>
+    <h1 class="text-3xl font-bold text-gray-900"><%= @provider.name %></h1>
     <p class="text-lg text-gray-600"><%= @provider.service_type %></p>
   </div>
   <div class="grid grid-cols-2 gap-4 mb-6">
