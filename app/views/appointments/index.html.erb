@@ -1,53 +1,119 @@
-<div class="overflow-x-auto">
-  <table class="min-w-full border-collapse border border-gray-200 shadow-md">
-    <thead class="bg-gray-100">
-      <tr>
-        <% if current_user.provider? %>
-          <th class="border border-gray-300 px-4 py-2 text-left">Customer Name</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">Appointment Time</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
-        <% else %>
-          <th class="border border-gray-300 px-4 py-2 text-left">Provider Name</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">Service Type</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">Location</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">Appointment Time</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @appointments.each do |appointment| %>
-        <tr class="odd:bg-white even:bg-gray-50">
-          <% if current_user.provider? %>
-            <td class="border border-gray-300 px-4 py-2">
-              <%= User.find(appointment.user_id).name %>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <%= appointment.appointment_time %>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <%= appointment.status %>
-            </td>
-          <% else %>
-            <% provider_info = Provider.find(appointment.provider_id) %>
-            <td class="border border-gray-300 px-4 py-2">
-              <%= provider_info.user.name %>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <%= provider_info.service_type %>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <%= provider_info.location %>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <%= appointment.appointment_time %>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <%= appointment.status %>
-            </td>
+<div class="space-y-8">
+
+  <!-- Upcoming Appointments -->
+  <div>
+    <h2 class="text-lg font-semibold mb-4">Upcoming Appointments</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full border-collapse border border-gray-200 shadow-md">
+        <thead class="bg-gray-100">
+          <tr>
+            <% if current_user.provider? %>
+              <th class="border border-gray-300 px-4 py-2 text-left">Customer Name</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Appointment Time</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+            <% else %>
+              <th class="border border-gray-300 px-4 py-2 text-left">Provider Name</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Service Type</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Location</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Appointment Time</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @upcoming_appointments.each do |appointment| %>
+            <tr class="odd:bg-white even:bg-gray-50">
+              <% if current_user.provider? %>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= User.find(appointment.user_id).name %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= appointment.appointment_time.strftime("%B %d, %Y %I:%M %p") %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2 capitalize">
+                  <%= appointment.status %>
+                </td>
+              <% else %>
+              <% provider = Provider.find(appointment.provider_id)%>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= provider.name %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= provider.service_type %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= provider.location %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= appointment.appointment_time.strftime("%B %d, %Y %I:%M %p") %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2 capitalize">
+                  <%= appointment.status %>
+                </td>
+              <% end %>
+            </tr>
           <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Previous Appointments -->
+  <div>
+    <h2 class="text-lg font-semibold mb-4">Previous Appointments</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full border-collapse border border-gray-200 shadow-md">
+        <thead class="bg-gray-100">
+          <tr>
+            <% if current_user.provider? %>
+              <th class="border border-gray-300 px-4 py-2 text-left">Customer Name</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Appointment Time</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+            <% else %>
+              <th class="border border-gray-300 px-4 py-2 text-left">Provider Name</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Service Type</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Location</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Appointment Time</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @previous_appointments.each do |appointment| %>
+            <tr class="odd:bg-white even:bg-gray-50">
+              <% if current_user.provider? %>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= User.find(appointment.user_id).name %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= appointment.appointment_time.strftime("%B %d, %Y %I:%M %p") %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2 capitalize">
+                  <%= appointment.status %>
+                </td>
+              <% else %>
+              <% provider = Provider.find(appointment.provider_id)%>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= provider.name %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= provider.service_type %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= provider.location %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                  <%= appointment.appointment_time.strftime("%B %d, %Y %I:%M %p") %>
+                </td>
+                <td class="border border-gray-300 px-4 py-2 capitalize">
+                  <%= appointment.status %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>

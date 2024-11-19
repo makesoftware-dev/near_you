@@ -2,17 +2,32 @@ class AppointmentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @appointments = if current_user.provider?
-      # current_user.provider.appointments.where(status: :confirmed)
-      current_user.provider.appointments
+    if current_user.provider?
+      # For providers: filter confirmed appointments into upcoming and previous
+      @upcoming_appointments = current_user.provider.appointments
+        .where(status: :confirmed)
+        .where("appointment_time  <= ?", Time.now)
+      @previous_appointments = current_user.provider.appointments
+        .where(status: :confirmed)
+        .where("appointment_time > ?", Time.now)
     else
-      # current_user.appointments.where(status: :confirmed)
-      current_user.appointments
+      # For regular users: filter confirmed appointments into upcoming and previous
+      @upcoming_appointments = current_user.appointments
+        .where(status: :confirmed)
+        .where("appointment_time <= ?", Time.now)
+      @previous_appointments = current_user.appointments
+        .where(status: :confirmed)
+        .where("appointment_time > ?", Time.now)
     end
   end
 
   def create
     @provider = Provider.find(params[:provider_id])
+    unless @provider.stripe_account_id.present?
+      redirect_to provider_path(@provider), alert: "This provider hasn't set up payments yet"
+      return
+    end
+
     @appointment = Appointment.new(
       user: current_user,
       provider: @provider,
@@ -27,7 +42,7 @@ class AppointmentsController < ApplicationController
           price_data: {
             currency: "ron",
             product_data: {
-              name: "Appointment with #{@provider.user.name}"
+              name: "Appointment with #{@provider.name}"
             },
             unit_amount: @provider.hourly_rate.to_i * 100
           },
