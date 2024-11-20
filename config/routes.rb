@@ -10,4 +10,8 @@ Rails.application.routes.draw do
     get :success, on: :member
     get :cancel, on: :member
   end
+
+  resources :stripe_connect, only: [:create] do
+    get :status, on: :collection
+  end
 end

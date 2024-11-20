@@ -27,29 +27,40 @@
     <h2 class="text-xl font-semibold text-gray-900 mb-2">About</h2>
     <p class="text-gray-600"><%= @provider.bio %></p>
   </div>
-
+  <% if current_user == @provider.user %>
+    <div class="space-y-4">
+      <% if @provider.calendly_url.nil? %>
+        <div class="text-red-600">Your account is not active. Please create and add your calendly profile</div>
+      <% end %>
+      
+      <% if @provider.stripe_account_id.nil? %>
+        <div class="text-red-600">
+          To receive payments, you need to set up your Stripe account
+          <%= button_to "Set up Stripe Account", 
+              stripe_connect_index_path(provider_id: @provider.id),
+              method: :post, 
+              class: "mt-2 mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
+              data: { turbo: false }%>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  
   <div class="flex justify-between items-center">
     <% if current_user == @provider.user %>
       <%= link_to "Edit Profile", edit_provider_path(@provider), 
           class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
     <%else%>
       <% if @provider.calendly_url.present?%>
-      <%= link_to "Book an Appointment", @provider.calendly_url, 
+        <%= link_to "Book an Appointment", @provider.calendly_url, 
         class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded", target: "_blank" %>
-        
-        
         <%= button_to "Pay", appointments_path(appointment_time: Time.now, provider_id: @provider.id),
-    method: :post,
-    class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
-    data: { turbo: false } %>
-        
-        
-        <%else%>
-          <p class= "text-gray-600">This provider has not set up a booking link yet. </p>
-        <%end%>
+        method: :post, class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",data: { turbo: false } %>
+      <%else%>
+        <p class= "text-gray-600">This provider has not set up a booking link yet. </p>
+      <%end%>
     <% end %>
   </div>
-
   <% if current_user != @provider.user %>
     <div 
       data-controller="calendly"
