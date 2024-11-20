@@ -32,10 +32,10 @@
       <% if @provider.calendly_url.nil? %>
         <div class="text-red-600">Your account is not active. Please create and add your calendly profile</div>
       <% end %>
-      
       <% if @provider.stripe_account_id.nil? %>
         <div class="text-red-600">
           To receive payments, you need to set up your Stripe account
+          <input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
           <%= button_to "Set up Stripe Account", 
               stripe_connect_index_path(provider_id: @provider.id),
               method: :post, 
@@ -45,7 +45,6 @@
       <% end %>
     </div>
   <% end %>
-  
   <div class="flex justify-between items-center">
     <% if current_user == @provider.user %>
       <%= link_to "Edit Profile", edit_provider_path(@provider), 
