@@ -1,7 +1,7 @@
 class StripeConnectController < ApplicationController
   before_action :authenticate_user!
   before_action :set_provider, only: [:create]
-  NGROK_URL = ENV["NGROK_URL"] || "https://abc123.ngrok.io"
+  NGROK_URL = "https://3195-109-166-129-187.ngrok-free.app"
 
   def create
     # Create a new Stripe Connect account if one doesn't exist
@@ -11,7 +11,7 @@ class StripeConnectController < ApplicationController
     account_link = Stripe::AccountLink.create({
       account: @provider.stripe_account_id,
       refresh_url: "#{NGROK_URL}/stripe/refresh",
-      return_url: "#{NGROK_URL}/stripe/onboarded",
+      return_url: "#{NGROK_URL}/providers/#{@provider.id}",
       type: "account_onboarding",
       collect: "eventually_due"
     })

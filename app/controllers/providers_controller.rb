@@ -10,9 +10,12 @@ class ProvidersController < ApplicationController
         redirect_to new_provider_path, "Please complete you provider profile"
       end
     else
+      @categories = Provider.categories
       @service_types = Provider.distinct.service_types.values
       @providers = Provider.includes(:user)
-      if params[:service_type].present?
+      if params[:category].present?
+        @providers = @providers.where(service_type: @categories[params[:category]])
+      elsif params[:service_type].present?
         @providers = @providers.where(service_type: params[:service_type])
 
       end

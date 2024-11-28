@@ -11,5 +11,6 @@ Rails.application.routes.draw do
     get :cancel, on: :member
   end
 
+  # post "/stripe/webhook", to: "stripe#webhook"
   resources :stripe_connect, only: [:create]
 end
