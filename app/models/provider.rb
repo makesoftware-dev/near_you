@@ -1,6 +1,7 @@
 class Provider < ApplicationRecord
   belongs_to :user
   has_many :appointments, dependent: :destroy
+  has_many :availabilities, dependent: :destroy
   validates :user_id, uniqueness: true, presence: true
 
   enum stripe_status: {incomplete: "incomplete", active: "active"}

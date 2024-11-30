@@ -61,8 +61,8 @@
       <%= link_to "Edit Profile", edit_provider_path(@provider), 
           class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
     <%else%>
-      <% if @provider.calendly_url.present?%>
-        <%= link_to "Book an Appointment", @provider.calendly_url, 
+      <% if @provider %>
+        <%= link_to "Book an Appointment", root_path, 
         class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded", target: "_blank" %>
         <%= button_to "Pay", appointments_path(appointment_time: Time.now, provider_id: @provider.id),
         method: :post, class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",data: { turbo: false } %>
