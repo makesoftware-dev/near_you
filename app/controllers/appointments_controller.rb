@@ -76,34 +76,4 @@ class AppointmentsController < ApplicationController
     redirect_to appointments_path, alert: "Appointment cancelled."
   end
 
-  private
-
-  def schedule_calendly_event(appointment)
-    calendly_api_token = ENV["CALENDLY_API_TOKEN"]
-    event_type = @provider.service_type
-
-    headers = {
-      "Authorization" => "Bearer #{calendly_api_token}",
-      "Content-Type" => "application/json"
-    }
-    body = {
-      "event" => {
-        "event_type" => event_type,
-        "invitee" => {
-          "email" => appointment.user.email,
-          "name" => appointment.user.name
-        },
-        "start_time" => appointment.appointment_time.iso8601
-      }
-    }
-
-    response = HTTParty.post("https://api.calendly.com/scheduled_events", headers: headers, body: body.to_json)
-
-    # Handle success or error responses
-    if response.success?
-      Rails.logger.info "Successfully scheduled event in Calendly"
-    else
-      Rails.logger.error "Failed to schedule event in Calendly: #{response.body}"
-    end
-  end
 end
