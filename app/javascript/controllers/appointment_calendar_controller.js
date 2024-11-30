@@ -17,6 +17,9 @@ export default class extends Controller {
 
   selectDate(event) {
     const date = event.target.value
+    const providerId = this.element.dataset.appointmentCalendarProviderIdValue;
+  console.log("this is the value of provider id", providerId);
+    console.log("provider: ", providerId)
     fetch(`/providers/${this.element.dataset.providerId}/available_slots?date=${date}`)
       .then(response => response.json())
       .then(data => {

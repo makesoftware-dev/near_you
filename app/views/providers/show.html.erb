@@ -64,12 +64,11 @@
           provider_availabilities_path(@provider), 
           class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
     <% else %>
-      <% if @provider.availabilities.any? { |availability| availability.available? } %>
-        <div data-controller="appointment-calendar">
+      <div data-controller="appointment-calendar" data-appointment-calendar-provider-id-value="<%= @provider.id %>">
+        <% if @provider.availabilities.any? { |availability| availability.available? } %>
           <button type="button"
           class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          data-action="click->appointment-calendar#show"
-            data-appointment-calendar-provider-id-value="<%= @provider.id %>">
+          data-action="click->appointment-calendar#show">
             Book an Appointment
           </button>
         <% else %>
