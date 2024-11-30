@@ -29,9 +29,6 @@
   </div>
   <% if current_user == @provider.user %>
     <div class="space-y-4">
-      <% if @provider.calendly_url.nil? %>
-        <div class="text-red-600">Your account is not active. Please create and add your calendly profile</div>
-      <% end %>
       <% if @provider.stripe_account_id.nil? %>
         <div class="text-red-600">
           To receive payments, you need to set up your Stripe account
@@ -41,6 +38,20 @@
               method: :post, 
               class: "mt-2 mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
               data: { turbo: false }%>
+        </div>
+      <% elsif @provider.stripe_status == "incomplete" %>
+        <div class="text-yellow-600">
+          Your Stripe account is incomplete. Pending details:
+          <ul>
+            <% Array(@provider.requirements_due).each do |requirement| %>
+              <li><%= requirement.humanize %></li>
+            <% end %>
+          </ul>
+          <%= button_to "Complete Stripe Setup", 
+                  stripe_connect_index_path(provider_id: @provider.id),
+                  method: :post, 
+                  class: "mt-2 mb-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded",
+                  data: { turbo: false } %>
         </div>
       <% end %>
     </div>
@@ -60,14 +71,4 @@
       <%end%>
     <% end %>
   </div>
-  <% if current_user != @provider.user %>
-    <div 
-      data-controller="calendly"
-      data-calendly-url="<%= @provider.calendly_url %>"
-      data-user-name="<%= current_user.name %>"
-      data-user-email="<%= current_user.email %>"
-      data-provider-id="<%= @provider.id %>"
-      style="min-height: 700px;">
-    </div>
-  <% end %>
 </div>

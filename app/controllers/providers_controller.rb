@@ -7,7 +7,7 @@ class ProvidersController < ApplicationController
       if @provider
         redirect_to provider_path(@provider)
       else
-        redirect_to new_provider_path, "Please complete you provider profile"
+        redirect_to new_provider_path, alert: "Please complete you provider profile"
       end
     else
       @categories = Provider.categories
@@ -75,6 +75,6 @@ class ProvidersController < ApplicationController
   private
 
   def provider_params
-    params.require(:provider).permit(:id, :service_type, :experience, :hourly_rate, :bio, :rating, :location, :name, :calendly_url)
+    params.require(:provider).permit(:id, :service_type, :experience, :hourly_rate, :bio, :rating, :location, :name)
   end
 end

@@ -2,31 +2,91 @@ class Provider < ApplicationRecord
   belongs_to :user
   has_many :appointments, dependent: :destroy
   validates :user_id, uniqueness: true, presence: true
-  # validates :calendly_url, format: {with: URL::DEFAULT_PARSER.make_regexp(%w[http https]), message: "must me a valid URL"}, allow_blank: true
+
+  enum stripe_status: {incomplete: "incomplete", active: "active"}
 
   enum service_type: {
     # Health & Wellness
     masseur: "Masseur",
     personal_trainer: "Personal Trainer",
     nutritionist: "Nutritionist",
+    yoga_instructor: "Yoga Instructor",
+    chiropractor: "Chiropractor",
+    physical_therapist: "Physical Therapist",
+
+    # Beauty & Grooming
+    hairstylist: "Hairstylist",
+    makeup_artist: "Makeup Artist",
+    nail_technician: "Nail Technician",
+    eyelash_technician: "Eyelash Technician",
+    facial_expert: "Facial Expert",
+    tanning_specialist: "Tanning Specialist",
+    barber: "Barber",
 
     # Home Services
     electrician: "Electrician",
     plumber: "Plumber",
     gardener: "Gardener",
+    house_cleaner: "House Cleaner",
+    handyman: "Handyman",
+    painter: "Painter",
+    window_cleaner: "Window Cleaner",
 
     # Education
     tutor: "Tutor",
     music_teacher: "Music Teacher",
-    language_coach: "Language Coach"
+    language_coach: "Language Coach",
+    coding_instructor: "Coding Instructor",
+    art_instructor: "Art Instructor",
+
+    # Creative Services
+    photographer: "Photographer",
+    videographer: "Videographer",
+    event_decorator: "Event Decorator",
+    florist: "Florist",
+
+    # Event Services
+    dj: "DJ",
+    caterer: "Caterer",
+    entertainer: "Entertainer",
+
+    # Specialty & Miscellaneous
+    astrologer: "Astrologer",
+    tarot_reader: "Tarot Reader",
+    translator: "Translator",
+    pet_groomer: "Pet Groomer",
+    tailor: "Tailor"
   }
 
-  # Define categories
   def self.categories
     {
-      "Health & Wellness" => ["Masseur", "Personal Trainer", "Nutritionist"],
-      "Home Services" => ["Electrician", "Plumber", "Gardener"],
-      "Education" => ["Tutor", "Music Teacher", "Language Coach"]
+      "Health & Wellness" => [
+        "Masseur", "Personal Trainer", "Nutritionist", 
+        "Yoga Instructor", "Chiropractor", "Physical Therapist"
+      ],
+      "Beauty & Grooming" => [
+        "Hairstylist", "Makeup Artist", "Nail Technician", 
+        "Eyelash Technician", "Facial Expert", "Tanning Specialist", 
+        "Barber"
+      ],
+      "Home Services" => [
+        "Electrician", "Plumber", "Gardener", "House Cleaner", 
+        "Handyman", "Painter", "Window Cleaner"
+      ],
+      "Education" => [
+        "Tutor", "Music Teacher", "Language Coach", 
+        "Coding Instructor", "Art Instructor"
+      ],
+      "Creative Services" => [
+        "Photographer", "Videographer", "Event Decorator", "Florist"
+      ],
+      "Event Services" => [
+        "DJ", "Caterer", "Entertainer"
+      ],
+      "Specialty & Miscellaneous" => [
+        "Astrologer", "Tarot Reader", "Translator", 
+        "Pet Groomer", "Tailor"
+      ]
     }
   end
 end

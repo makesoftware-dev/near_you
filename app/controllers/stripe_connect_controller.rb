@@ -1,7 +1,7 @@
 class StripeConnectController < ApplicationController
   before_action :authenticate_user!
   before_action :set_provider, only: [:create]
-  NGROK_URL = "https://3195-109-166-129-187.ngrok-free.app"
+  NGROK_URL = "https://2b4a-109-166-129-187.ngrok-free.app"
 
   def create
     # Create a new Stripe Connect account if one doesn't exist
@@ -37,12 +37,12 @@ class StripeConnectController < ApplicationController
       country: "RO",
       business_type: "individual",
       capabilities: {
-        card_payments: { requested: true },
-        transfers: { requested: true }
+        card_payments: {requested: true},
+        transfers: {requested: true}
       }
     })
 
-    @provider.update!(stripe_account_id: account.id)
+    @provider.update!(stripe_account_id: account.id, stripe_status: "incomplete", charges_enabled: account.charges_enabled, payouts_enabled: account.payouts_enabled, requirements_due: account.requirements.currently_due)
     Rails.logger.info("Stripe account create for Provider ID #{@provider.id}: #{account.id}")
   end
 end

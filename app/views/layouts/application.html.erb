@@ -9,7 +9,6 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "https://js.stripe.com/v3/"%>
-    <script src="https://assets.calendly.com/assets/external/widget.js"></script>
   </head>
   <body>
     <nav class="bg-white shadow-lg mb-8">
@@ -57,11 +56,7 @@
                         class: "block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100" %>
                 </div>
               </div>
-            <% else %>
-              <%= link_to "Login", new_user_session_path, 
-                    class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-              <%= link_to "Sign Up", new_user_registration_path, 
-                    class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+            
             <% end %>
           </div>
         </div>
