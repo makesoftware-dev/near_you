@@ -37,7 +37,7 @@
               stripe_connect_index_path(provider_id: @provider.id),
               method: :post, 
               class: "mt-2 mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
-              data: { turbo: false }%>
+              data: { turbo: false } %>
         </div>
       <% elsif @provider.stripe_status == "incomplete" %>
         <div class="text-yellow-600">
@@ -60,15 +60,41 @@
     <% if current_user == @provider.user %>
       <%= link_to "Edit Profile", edit_provider_path(@provider), 
           class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-    <%else%>
-      <% if @provider %>
-        <%= link_to "Book an Appointment", root_path, 
-        class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded", target: "_blank" %>
-        <%= button_to "Pay", appointments_path(appointment_time: Time.now, provider_id: @provider.id),
-        method: :post, class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",data: { turbo: false } %>
-      <%else%>
-        <p class= "text-gray-600">This provider has not set up a booking link yet. </p>
-      <%end%>
-    <% end %>
+      <%= link_to "Manage Availability", 
+          provider_availabilities_path(@provider), 
+          class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+    <% else %>
+      <% if @provider.availabilities.any? { |availability| availability.available? } %>
+        <div data-controller="appointment-calendar">
+          <button type="button"
+          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          data-action="click->appointment-calendar#show"
+            data-appointment-calendar-provider-id-value="<%= @provider.id %>">
+            Book an Appointment
+          </button>
+        <% else %>
+          <p class="text-gray-600">This provider is not available for appointments at the moment.</p>
+        <% end %>
+      <% end %>
+      <!-- Appointment Modal -->
+      <div data-appointment-calendar-target="modal" class="hidden fixed z-10 inset-0 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen">
+          <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-xl font-bold">Select a Date & Time</h2>
+              <button data-action="appointment-calendar#hide" class="text-red-600 font-bold">X</button>
+            </div>
+            <div>
+              <label for="appointment-date" class="block text-gray-700">Choose a Date:</label>
+              <input type="date" id="appointment-date" class="block w-full border-gray-300 rounded-md shadow-sm" 
+              data-action="change->appointment-calendar#selectDate">
+            </div>
+            <div>
+              <h3 class="mt-4 text-lg font-semibold">Available Time Slots:</h3>
+              <div id="time-slot-container" data-appointment-calendar-target="timeSlot" class="flex flex-wrap mt-2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>

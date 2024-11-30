@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   devise_for :users
 
   root "providers#index"
-  resources :providers, only: [:index, :show, :new, :create, :edit, :update]
+  resources :providers, only: [:index, :show, :new, :create, :edit, :update] do
+    resources :availabilities, only: [:index, :create, :update, :destroy]
+  end
   resources :appointments, only: [:create, :index] do
     get :success, on: :member
     get :cancel, on: :member

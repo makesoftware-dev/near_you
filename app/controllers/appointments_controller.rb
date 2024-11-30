@@ -21,17 +21,33 @@ class AppointmentsController < ApplicationController
     end
   end
 
+  def new
+    @provider = Provider.find(params[:provider_id])
+    @availabilities = @provider.availabilities.where("available = ?", true)
+    @appointment = Appointment.new
+  end
+
   def create
     @provider = Provider.find(params[:provider_id])
+
+    # Check if provider has a Stripe account set up
     unless @provider.stripe_account_id.present?
       redirect_to provider_path(@provider), alert: "This provider hasn't set up payments yet"
+      return
+    end
+
+    # Ensure the appointment is within the provider's available times
+    availability = @provider.availabilities.find_by(day_of_week: params[:appointment][:day_of_week], start_time: params[:appointment][:start_time])
+
+    unless availability&.available?
+      redirect_to provider_path(@provider), alert: "This time slot is not available."
       return
     end
 
     @appointment = Appointment.new(
       user: current_user,
       provider: @provider,
-      appointment_time: params[:appointment_time],
+      appointment_time: "#{params[:appointment][:day_of_week]} #{params[:appointment][:start_time]}",
       status: "pending"
     )
 
@@ -65,8 +81,8 @@ class AppointmentsController < ApplicationController
 
   def success
     @appointment = Appointment.find(params[:id])
+    # Only confirm the appointment if payment was successful
     @appointment.update(status: :confirmed)
-    # schedule_calendly_event(@appointment)
     redirect_to appointments_path, notice: "Appointment confirmed successfully!"
   end
 
@@ -75,5 +91,4 @@ class AppointmentsController < ApplicationController
     @appointment.update(status: :cancelled)
     redirect_to appointments_path, alert: "Appointment cancelled."
   end
-
 end

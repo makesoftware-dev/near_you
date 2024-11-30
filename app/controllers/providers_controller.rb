@@ -74,14 +74,13 @@ class ProvidersController < ApplicationController
 
   def available_slots
     provider = Provider.find(params[:id])
-    date = Date.parse(params[:date]) # The date from the frontend
-
-    day_of_week = date.strftime("%A") # Convert the date to the day of the week (e.g., "Monday")
+    date = Date.parse(params[:date])
+    day_of_week = date.strftime("%A")
 
     availability = provider.availabilities.find_by(day_of_week: day_of_week)
 
     if availability&.available
-      slots = generate_slots(availability.start_time, availability.end_time)
+      slots = generate_slots_for_date(date, availability.start_time, availability.end_time)
       render json: {slots: slots}
     else
       render json: {slots: []}
@@ -94,13 +93,26 @@ class ProvidersController < ApplicationController
     params.require(:provider).permit(:id, :service_type, :experience, :hourly_rate, :bio, :rating, :location, :name)
   end
 
-  def generate_slots(start_time, end_time)
+  def generate_slots_for_date(date, start_time, end_time)
     slots = []
-    current_time = start_time
+    current_time = DateTime.new(
+      date.year,
+      date.month,
+      date.day,
+      start_time.hour,
+      start_time.min
+    )
+    end_time = DateTime.new(
+      date.year,
+      date.month,
+      date.day,
+      end_time.hour,
+      end_time.min
+    )
 
     while current_time < end_time
-      slots << current_time.strftime("%H:%M")
-      current_time += 30.minutes # Assuming 30-minute intervals for slots
+      slots << current_time.strftime("%I:%M %p")
+      current_time += 30.minutes
     end
 
     slots

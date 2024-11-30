@@ -22,7 +22,7 @@ export default class extends Controller {
       .then(data => {
         this.timeSlotTarget.innerHTML = data.slots.map(slot =>
           `<button data-time="${slot}" 
-                  class="slot-btn bg-gray-200 hover:bg-gray-400 text-black font-bold py-1 px-2 m-1 rounded">${slot}</button>`
+            class="slot-btn bg-gray-200 hover:bg-gray-400 text-black font-bold py-1 px-2 m-1 rounded">${slot}</button>`
         ).join("")
       })
   }
