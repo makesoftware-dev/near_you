@@ -1,14 +1,15 @@
 class ProvidersController < ApplicationController
-  before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:index]
+  before_action :authenticate_user!, only: [:show, :edit, :update, :available_slots]
   before_action :set_provider, only: [:show, :edit, :update, :available_slots]
 
   def index
-    if current_user.provider?
+    if current_user&.provider?
       @provider = current_user.provider
       if @provider
         redirect_to provider_path(@provider)
       else
-        redirect_to new_provider_path, alert: "Please complete you provider profile"
+        redirect_to new_provider_path, alert: "Please complete your provider profile"
       end
     else
       @categories = Provider.categories
@@ -18,14 +19,13 @@ class ProvidersController < ApplicationController
         @providers = @providers.where(service_type: @categories[params[:category]])
       elsif params[:service_type].present?
         @providers = @providers.where(service_type: params[:service_type])
-
       end
     end
   end
 
   def new
-    if current_user.provider?
-      redirect_to provider_path(current_user.provider), alert: "You are already a provider"
+    if current_user&.provider?
+      redirect_to provider_path(current_user&.provider), alert: "You are already a provider"
     else
       @provider = Provider.new
     end
@@ -93,10 +93,6 @@ class ProvidersController < ApplicationController
     params.require(:provider).permit(:id, :service_type, :experience, :hourly_rate, :bio, :rating, :location, :name)
   end
 
-  def set_provider
-    @provider = Provider.find(params[:id])
-  end
-
   def generate_slots(date, availability)
     slots = []
     current_time = DateTime.new(
@@ -115,10 +111,14 @@ class ProvidersController < ApplicationController
       availability.end_time.min
     )
 
-    session_duration = availability.session_duration || 60 # default to 60 minutes if not set
+    session_duration = availability.session_duration || 60
 
     while current_time + session_duration.minutes <= end_time
-      slots << current_time.strftime("%I:%M %p")
+      # Check if there are any active appointments in this slot
+      slot_end_time = current_time + session_duration.minutes
+      unless @provider.appointments.active.overlapping(current_time, slot_end_time).exists?
+        slots << current_time.strftime("%I:%M %p")
+      end
       current_time += session_duration.minutes
     end
 
@@ -129,5 +129,9 @@ class ProvidersController < ApplicationController
     end
 
     slots
+  end
+
+  def set_provider
+    @provider = Provider.find(params[:id])
   end
 end

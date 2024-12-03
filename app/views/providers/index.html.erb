@@ -1,35 +1,48 @@
-<% if current_user.user? %>
-  <h2>Browse Providers</h2>
-  <%= form_with url: providers_path, method: :get, local: true do %>
-    <div class="mb-4">
-      <%= select_tag :category, options_for_select(@categories.keys, selected: params[:category]), 
-        prompt: "Filter by Category", class: "form-select" %>
-      <%= submit_tag "Filter", class: "btn btn-primary ml-2" %>
-    </div>
-  <% end %>
-  <% if params[:category].present? %>
+<% if user_signed_in? %>
+  <% if current_user.user? %>
+    <h2>Browse Providers</h2>
     <%= form_with url: providers_path, method: :get, local: true do %>
       <div class="mb-4">
-        <%= select_tag :service_type, 
-          options_for_select(@categories[params[:category]], selected: params[:service_type]), 
-          prompt: "Filter by Service Type", class: "form-select" %>
-        <%= submit_tag "Filter", class: "btn btn-secondary ml-2" %>
+        <%= select_tag :category, options_for_select(@categories.keys, selected: params[:category]), 
+          prompt: "Filter by Category", class: "form-select" %>
+        <%= submit_tag "Filter", class: "btn btn-primary ml-2" %>
       </div>
     <% end %>
-  <% end %>
-  <div>
-    <% @providers&.each do |provider| %>
-      <%= link_to provider_path(provider), class:"provider-card-link" do %>
-        <div class="provider-card flex items-center space-x-4 p-4 border rounded-lg mb-4 cursor-pointer">
-          <%= image_tag gravatar_url(provider.user.email, 50), class: "rounded-full w-12 h-12 object-cover" %>
-          <div>
-            <h3><%= provider.user.name %></h3>
-            <p>Service: <%= provider.service_type %></p>
-            <p>Location: <%= provider.location %></p>
-            <p>Hourly Rate: <%= provider.hourly_rate %> RON</p>
-          </div>
+    <% if params[:category].present? %>
+      <%= form_with url: providers_path, method: :get, local: true do %>
+        <div class="mb-4">
+          <%= select_tag :service_type, 
+            options_for_select(@categories[params[:category]], selected: params[:service_type]), 
+            prompt: "Filter by Service Type", class: "form-select" %>
+          <%= submit_tag "Filter", class: "btn btn-secondary ml-2" %>
         </div>
-      <%end%>
+      <% end %>
     <% end %>
+    <div>
+      <% @providers&.each do |provider| %>
+        <%= link_to provider_path(provider), class:"provider-card-link" do %>
+          <div class="provider-card flex items-center space-x-4 p-4 border rounded-lg mb-4 cursor-pointer">
+            <%= image_tag gravatar_url(provider.user.email, 50), class: "rounded-full w-12 h-12 object-cover" %>
+            <div>
+              <h3><%= provider.user.name %></h3>
+              <p>Service: <%= provider.service_type %></p>
+              <p>Location: <%= provider.location %></p>
+              <p>Hourly Rate: <%= provider.hourly_rate %> RON</p>
+            </div>
+          </div>
+        <%end%>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="text-center py-12">
+    <h1 class="text-3xl font-bold mb-4">Welcome to NearYou</h1>
+    <p class="text-lg mb-8">Find and book local service providers</p>
+    <div class="space-x-4">
+      <%= link_to "Sign In", new_user_session_path, 
+          class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+      <%= link_to "Sign Up", new_user_registration_path, 
+          class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+    </div>
   </div>
 <% end %>

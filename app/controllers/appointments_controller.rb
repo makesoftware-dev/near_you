@@ -65,6 +65,9 @@ class AppointmentsController < ApplicationController
       )
 
       if @appointment.save
+        # Schedule cleanup job for this appointment
+        CleanupPendingAppointmentsJob.set(wait: 30.minutes).perform_later
+
         session = Stripe::Checkout::Session.create(
           payment_method_types: ["card"],
           line_items: [{
@@ -79,13 +82,15 @@ class AppointmentsController < ApplicationController
           }],
           mode: "payment",
           success_url: success_appointment_url(@appointment),
-          cancel_url: cancel_appointment_url(@appointment)
+          cancel_url: cancel_appointment_url(@appointment),
+          expires_at: Time.now.to_i + (30 * 60) # Expire after 30 minutes
         )
 
         @appointment.update(stripe_session_id: session.id)
         redirect_to session.url, allow_other_host: true
       else
-        redirect_to provider_path(@provider), alert: "Could not create appointment."
+        redirect_to provider_path(@provider), 
+                    alert: "Could not create appointment: #{@appointment.errors.full_messages.join(', ')}"
       end
     else
       redirect_to provider_path(@provider), alert: "This time slot is not available."
