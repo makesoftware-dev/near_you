@@ -18,15 +18,17 @@ export default class extends Controller {
   selectDate(event) {
     const date = event.target.value
     const providerId = this.element.dataset.appointmentCalendarProviderIdValue;
-  console.log("this is the value of provider id", providerId);
-    console.log("provider: ", providerId)
-    fetch(`/providers/${this.element.dataset.providerId}/available_slots?date=${date}`)
+    
+    fetch(`/providers/${providerId}/available_slots?date=${date}`)
       .then(response => response.json())
       .then(data => {
         this.timeSlotTarget.innerHTML = data.slots.map(slot =>
           `<button data-time="${slot}" 
-            class="slot-btn bg-gray-200 hover:bg-gray-400 text-black font-bold py-1 px-2 m-1 rounded">${slot}</button>`
+            class="slot-btn bg-gray-200 hover:bg-gray-400 text-black font-bold py-1 px-2 m-1 rounded">
+            ${slot}
+          </button>`
         ).join("")
       })
+      .catch(error => console.error('Error:', error));
   }
 }

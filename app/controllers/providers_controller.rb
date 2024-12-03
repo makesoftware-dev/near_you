@@ -1,5 +1,6 @@
 class ProvidersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_provider, only: [:show, :edit, :update, :available_slots]
 
   def index
     if current_user.provider?
@@ -73,14 +74,13 @@ class ProvidersController < ApplicationController
   end
 
   def available_slots
-    provider = Provider.find(params[:id])
     date = Date.parse(params[:date])
     day_of_week = date.strftime("%A")
 
-    availability = provider.availabilities.find_by(day_of_week: day_of_week)
+    availability = @provider.availabilities.find_by(day_of_week: day_of_week)
 
-    if availability&.available
-      slots = generate_slots_for_date(date, availability.start_time, availability.end_time)
+    if availability&.available?
+      slots = generate_slots(date, availability)
       render json: {slots: slots}
     else
       render json: {slots: []}
@@ -93,26 +93,39 @@ class ProvidersController < ApplicationController
     params.require(:provider).permit(:id, :service_type, :experience, :hourly_rate, :bio, :rating, :location, :name)
   end
 
-  def generate_slots_for_date(date, start_time, end_time)
+  def set_provider
+    @provider = Provider.find(params[:id])
+  end
+
+  def generate_slots(date, availability)
     slots = []
     current_time = DateTime.new(
       date.year,
       date.month,
       date.day,
-      start_time.hour,
-      start_time.min
+      availability.start_time.hour,
+      availability.start_time.min
     )
+
     end_time = DateTime.new(
       date.year,
       date.month,
       date.day,
-      end_time.hour,
-      end_time.min
+      availability.end_time.hour,
+      availability.end_time.min
     )
 
-    while current_time < end_time
+    session_duration = availability.session_duration || 60 # default to 60 minutes if not set
+
+    while current_time + session_duration.minutes <= end_time
       slots << current_time.strftime("%I:%M %p")
-      current_time += 30.minutes
+      current_time += session_duration.minutes
+    end
+
+    # Filter out past slots if date is today
+    if date.today?
+      current_time = Time.current
+      slots.reject! { |slot| Time.parse(slot) <= current_time }
     end
 
     slots

@@ -9,11 +9,12 @@ class AvailabilitiesController < ApplicationController
   end
 
   def create
-    @availability = @provider.availabilities.build(availability_params)
+    @availability = @provider.availabilities.find_or_initialize_by(day_of_week: availability_params[:day_of_week])
     @availability.available = true
 
-    if @availability.save
-      redirect_to provider_availabilities_path(@provider), notice: "Availability was successfully added."
+    if @availability.update(availability_params)
+      notice_message = @availability.new_record? ? "Availability was successfully added." : "Availability was successfully updated."
+      redirect_to provider_availabilities_path(@provider), notice: notice_message
     else
       redirect_to provider_availabilities_path(@provider), alert: "Error adding availability: #{@availability.errors.full_messages.join(", ")}"
     end
@@ -49,6 +50,6 @@ class AvailabilitiesController < ApplicationController
   end
 
   def availability_params
-    params.require(:availability).permit(:day_of_week, :start_time, :end_time)
+    params.require(:availability).permit(:day_of_week, :start_time, :end_time, :available, :session_duration)
   end
 end

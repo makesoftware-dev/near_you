@@ -10,18 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_30_173744) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_02_123734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "appointments", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "provider_id", null: false
-    t.datetime "appointment_time"
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "stripe_session_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.index ["provider_id"], name: "index_appointments_on_provider_id"
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
@@ -34,6 +35,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_30_173744) do
     t.boolean "available"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "session_duration", default: 60, null: false
+    t.index ["provider_id", "day_of_week"], name: "index_provider_day_of_week", unique: true
     t.index ["provider_id"], name: "index_availabilities_on_provider_id"
   end
 
