@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   resources :providers, only: [:index, :show, :new, :create, :edit, :update] do
     resources :availabilities, only: [:index, :create, :update, :destroy]
     get "available_slots", on: :member
+    resources :appointments, only: [:create]
   end
-  resources :appointments, only: [:create, :index] do
+  resources :appointments, only: [:index] do
     get :success, on: :member
     get :cancel, on: :member
   end

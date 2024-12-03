@@ -28,7 +28,7 @@
                   <%= User.find(appointment.user_id).name %>
                 </td>
                 <td class="border border-gray-300 px-4 py-2">
-                  <%= appointment.appointment_time.strftime("%B %d, %Y %I:%M %p") %>
+                  <%= appointment.start_time.strftime("%B %d, %Y %I:%M %p") %>
                 </td>
                 <td class="border border-gray-300 px-4 py-2 capitalize">
                   <%= appointment.status %>
@@ -45,7 +45,7 @@
                   <%= provider.location %>
                 </td>
                 <td class="border border-gray-300 px-4 py-2">
-                  <%= appointment.appointment_time.strftime("%B %d, %Y %I:%M %p") %>
+                  <%= appointment.start_time.strftime("%B %d, %Y %I:%M %p") %>
                 </td>
                 <td class="border border-gray-300 px-4 py-2 capitalize">
                   <%= appointment.status %>
@@ -86,7 +86,7 @@
                   <%= User.find(appointment.user_id).name %>
                 </td>
                 <td class="border border-gray-300 px-4 py-2">
-                  <%= appointment.appointment_time.strftime("%B %d, %Y %I:%M %p") %>
+                  <%= appointment.start_time.strftime("%B %d, %Y %I:%M %p") %>
                 </td>
                 <td class="border border-gray-300 px-4 py-2 capitalize">
                   <%= appointment.status %>
@@ -103,7 +103,7 @@
                   <%= provider.location %>
                 </td>
                 <td class="border border-gray-300 px-4 py-2">
-                  <%= appointment.appointment_time.strftime("%B %d, %Y %I:%M %p") %>
+                  <%= appointment.start_time.strftime("%B %d, %Y %I:%M %p") %>
                 </td>
                 <td class="border border-gray-300 px-4 py-2 capitalize">
                   <%= appointment.status %>
