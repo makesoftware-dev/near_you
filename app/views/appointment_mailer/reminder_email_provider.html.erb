@@ -1,0 +1,11 @@
+<h1>Appointment Reminder</h1>
+<p>Hello <%= @provider.name %>,</p>
+<p>This is a reminder that you have an appointment in 1 hour:</p>
+<div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+  <p><strong>Client:</strong> <%= @user.name %></p>
+  <p><strong>Time:</strong> <%= @appointment.start_time.strftime("%I:%M %p") %></p>
+  <p><strong>Duration:</strong> <%= @appointment.end_time - @appointment.start_time %> minutes</p>
+</div>
+<p>Best regards,<br>
+  Team NearYou</p>
+ 

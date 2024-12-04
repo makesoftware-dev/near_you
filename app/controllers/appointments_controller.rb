@@ -99,8 +99,15 @@ class AppointmentsController < ApplicationController
 
   def success
     @appointment = Appointment.find(params[:id])
-    # Only confirm the appointment if payment was successful
     @appointment.update(status: :confirmed)
+    
+    # Schedule confirmation emails
+    AppointmentConfirmationJob.perform_later(@appointment.id)
+    
+    # Schedule reminder emails for 1 hour before the appointment
+    reminder_time = @appointment.start_time - 1.hour
+    AppointmentReminderJob.set(wait_until: reminder_time).perform_later(@appointment.id)
+    
     redirect_to appointments_path, notice: "Appointment confirmed successfully!"
   end
 

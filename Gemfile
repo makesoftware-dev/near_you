@@ -62,6 +62,8 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  gem "letter_opener"
 end
 
 group :test do
@@ -76,3 +78,4 @@ gem "standard", "~> 1.41", ">= 1.41.1"
 gem "pundit"
 gem "avo"
 gem "httparty"
+gem "sidekiq"
