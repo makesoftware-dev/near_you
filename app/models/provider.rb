@@ -2,6 +2,7 @@ class Provider < ApplicationRecord
   belongs_to :user
   has_many :appointments, dependent: :destroy
   has_many :availabilities, dependent: :destroy
+  has_many :notifications, as: :recipient, dependent: :destroy, class_name: "Noticed::Notification"
 
   validates :user_id, uniqueness: true, presence: true
 
