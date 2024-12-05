@@ -102,7 +102,7 @@ class AppointmentsController < ApplicationController
     @appointment.update(status: :confirmed)
     
     # Schedule confirmation emails
-    AppointmentConfirmationJob.perform_later(@appointment.id)
+    AppointmentConfirmationJob.perform_now(@appointment.id)
     
     # Schedule reminder emails for 1 hour before the appointment
     reminder_time = @appointment.start_time - 1.hour
