@@ -17,4 +17,10 @@ Rails.application.routes.draw do
 
   post "/stripe/webhook", to: "stripe#webhook"
   resources :stripe_connect, only: [:create]
+
+  resources :notifications, only: [] do
+    member do
+      patch :read
+    end
+  end
 end
