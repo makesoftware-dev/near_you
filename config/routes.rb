@@ -9,6 +9,9 @@ Rails.application.routes.draw do
     resources :availabilities, only: [:index, :create, :update, :destroy]
     get "available_slots", on: :member
     resources :appointments, only: [:create]
+    resources :reviews, only: [:create, :update, :destroy] do
+      resources :review_responses, only: [:create, :update, :destroy]
+    end
   end
   resources :appointments, only: [:index] do
     get :success, on: :member
