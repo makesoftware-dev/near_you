@@ -5,6 +5,6 @@ class NotificationsController < ApplicationController
     @notification = current_user.notifications.find(params[:id])
     @notification.update(read_at: Time.current)
 
-    redirect_to appointments_path
+    redirect_to @notification.event.url
   end
 end

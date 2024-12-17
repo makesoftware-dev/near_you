@@ -6,10 +6,10 @@ class ReviewResponsesController < ApplicationController
   def create
     @review = Review.find(params[:review_id])
     @response = @review.review_responses.build(response_params)
-
     @response.provider = current_user.provider
 
     if @response.save
+      ReviewResponseNotifier.with(response: @response).deliver(@review.user)
       redirect_to provider_path(@review.provider), notice: "Response submitted successfully!"
     else
       redirect_to provider_path(@review.provider), alert: @response.errors.full_messages.join(", ")
