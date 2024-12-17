@@ -17,6 +17,7 @@ class ReviewsController < ApplicationController
 
     if @review.save
       update_provider_rating
+      NewReviewNotifier.with(review: @review).deliver(@provider.user)
       redirect_to provider_path(@provider), notice: "Review submitted successfully!"
     else
       redirect_to provider_path(@provider), alert: @review.errors.full_messages.to_sentence
