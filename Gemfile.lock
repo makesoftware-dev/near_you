@@ -162,6 +162,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.8.1)
+    language_filter (0.3.01)
     language_server-protocol (3.17.0.3)
     launchy (3.0.1)
       addressable (~> 2.8)
@@ -387,6 +388,7 @@ DEPENDENCIES
   httparty
   importmap-rails
   jbuilder
+  language_filter (~> 0.3.01)
   letter_opener
   noticed (~> 2.4, >= 2.4.3)
   pg (~> 1.1)
