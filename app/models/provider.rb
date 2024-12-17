@@ -3,6 +3,8 @@ class Provider < ApplicationRecord
   has_many :appointments, dependent: :destroy
   has_many :availabilities, dependent: :destroy
   has_many :notifications, as: :recipient, dependent: :destroy, class_name: "Noticed::Notification"
+  has_many :reviews, dependent: :destroy
+  has_many :review_responses, dependent: :destroy
 
   validates :user_id, uniqueness: true, presence: true
 
@@ -91,5 +93,9 @@ class Provider < ApplicationRecord
         "Pet Groomer", "Tailor"
       ]
     }
+  end
+
+  def recalculate_average_rating!
+    update!(rating: reviews.average(:rating).to_f.round(2))
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_04_181624) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_11_095317) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,6 +84,29 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_04_181624) do
     t.index ["user_id"], name: "index_providers_on_user_id"
   end
 
+  create_table "review_responses", force: :cascade do |t|
+    t.bigint "review_id", null: false
+    t.bigint "provider_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider_id"], name: "index_review_responses_on_provider_id"
+    t.index ["review_id"], name: "index_review_responses_on_review_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "provider_id", null: false
+    t.bigint "appointment_id", null: false
+    t.integer "rating", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["appointment_id"], name: "index_reviews_on_appointment_id"
+    t.index ["provider_id"], name: "index_reviews_on_provider_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -102,4 +125,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_04_181624) do
   add_foreign_key "appointments", "users"
   add_foreign_key "availabilities", "providers"
   add_foreign_key "providers", "users"
+  add_foreign_key "review_responses", "providers"
+  add_foreign_key "review_responses", "reviews"
+  add_foreign_key "reviews", "appointments"
+  add_foreign_key "reviews", "providers"
+  add_foreign_key "reviews", "users"
 end
