@@ -70,7 +70,6 @@
             <th class="border border-gray-300 px-4 py-2 text-left">Location</th>
             <th class="border border-gray-300 px-4 py-2 text-left">Appointment Time</th>
             <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
-            <th class="border border-gray-300 px-4 py-2 text-left">Review</th>
           </tr>
         </thead>
         <tbody>
@@ -91,13 +90,6 @@
               </td>
               <td class="border border-gray-300 px-4 py-2 capitalize">
                 <%= appointment.status %>
-              </td>
-              <td class="border border-gray-300 px-4 py-2">
-                <% if appointment.reviews.exists?(user_id: current_user.id) %>
-                  <p>Review already submitted</p>
-                <% else %>
-                  <%= link_to "Leave a Review", provider_path(provider, review: { appointment_id: appointment.id }), class: "text-blue-500" %>
-                <% end %>
               </td>
             </tr>
           <% end %>
