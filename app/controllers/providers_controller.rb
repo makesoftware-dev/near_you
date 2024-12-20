@@ -63,7 +63,16 @@ class ProvidersController < ApplicationController
     @provider = Provider.find(params[:id])
 
     if current_user == @provider.user
+      # Store the existing images before the update
+      existing_images = @provider.images
+
       if @provider.update(provider_params)
+        # Reattach existing images if no new images were uploaded
+        if params[:provider][:images].blank?
+          existing_images.each do |image|
+            @provider.images.attach(image.blob)
+          end
+        end
         redirect_to provider_path(@provider), notice: "Profile updated successfully"
       else
         render :edit, status: :unprocessable_entity
@@ -90,7 +99,7 @@ class ProvidersController < ApplicationController
   private
 
   def provider_params
-    params.require(:provider).permit(:id, :service_type, :experience, :hourly_rate, :bio, :rating, :location, :name)
+    params.require(:provider).permit(:name, :category, :service_type, :experience, :hourly_rate, :location, :bio, :profile_picture, images: [])
   end
 
   def generate_slots(date, availability)

@@ -5,6 +5,8 @@ class Provider < ApplicationRecord
   has_many :notifications, as: :recipient, dependent: :destroy, class_name: "Noticed::Notification"
   has_many :reviews, dependent: :destroy
   has_many :review_responses, dependent: :destroy
+  has_many_attached :images
+  has_one_attached :profile_picture
 
   validates :user_id, uniqueness: true, presence: true
 

@@ -23,7 +23,11 @@
         <!-- Review Header -->
         <div class="flex justify-between items-start mb-4">
           <div class="flex items-center">
-            <%= image_tag gravatar_url(review.user.email), class: "w-12 h-12 rounded-full mr-4" %>
+            <% if review.user.profile_picture.attached? %>
+              <%= image_tag review.user.profile_picture, class: "w-12 h-12 rounded-full mr-4" %>
+            <% else %>
+              <%= image_tag "default_profile_picture.svg", class: "w-12 h-12 rounded-full mr-4" %>
+            <% end %>
             <div>
               <h3 class="font-semibold text-gray-900"><%= review.user.name %></h3>
               <p class="text-sm text-gray-500"><%= review.created_at.strftime("%B %d, %Y") %></p>
