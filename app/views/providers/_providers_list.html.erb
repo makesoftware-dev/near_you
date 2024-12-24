@@ -1,0 +1,17 @@
+<% @providers&.each do |provider| %>
+  <%= link_to provider_path(provider), class:"provider-card-link" do %>
+    <div class="provider-card flex items-center space-x-4 p-4 border rounded-lg mb-4 cursor-pointer">
+      <% if provider.profile_picture.attached? %>
+        <%= image_tag provider.profile_picture, class: "rounded-full w-12 h-12 object-cover" %>
+      <% else %>
+        <%= image_tag "default_profile_picture.svg", class: "rounded-full w-12 h-12 object-cover" %>
+      <% end %>
+      <div>
+        <h3><%= provider.user.name %></h3>
+        <p>Service: <%= provider.service_type %></p>
+        <p>Location: <%= provider.location %></p>
+        <p>Hourly Rate: <%= provider.hourly_rate %> RON</p>
+      </div>
+    </div>
+  <% end %>
+<% end %>
