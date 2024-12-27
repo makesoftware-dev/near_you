@@ -15,10 +15,17 @@ class ProvidersController < ApplicationController
       @categories = Provider.categories
       @service_types = Provider.distinct.service_types.values
       @providers = Provider.includes(:user)
-      if params[:category].present?
-        @providers = @providers.where(service_type: @categories[params[:category]])
-      elsif params[:service_type].present?
-        @providers = @providers.where(service_type: params[:service_type])
+
+      filters = {}
+      filters[:service_type] = @categories[params[:category]] if params[:category].present?
+      filters[:service_type] = params[:service_type] if params[:service_type].present?
+      filters[:location] = params[:location] if params[:location].present?
+
+      @providers = @providers.where(filters) if filters.any?
+
+      respond_to do |format|
+        format.html # Regular rendering
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("providers", partial: "providers_list", locals: {providers: @providers}) }
       end
     end
   end

@@ -1,52 +1,95 @@
 <% if user_signed_in? %>
   <% if current_user.user? %>
-    <h2>Browse Providers</h2>
-    <%= form_with url: providers_path, method: :get, local: true do %>
-      <div class="mb-4">
-        <%= select_tag :category, options_for_select(@categories.keys, selected: params[:category]), 
-          prompt: "Filter by Category", class: "form-select" %>
-        <%= submit_tag "Filter", class: "btn btn-primary ml-2" %>
-      </div>
-    <% end %>
-    <% if params[:category].present? %>
-      <%= form_with url: providers_path, method: :get, local: true do %>
-        <div class="mb-4">
-          <%= select_tag :service_type, 
-            options_for_select(@categories[params[:category]], selected: params[:service_type]), 
-            prompt: "Filter by Service Type", class: "form-select" %>
-          <%= submit_tag "Filter", class: "btn btn-secondary ml-2" %>
-        </div>
-      <% end %>
-    <% end %>
-    <div>
-      <% @providers&.each do |provider| %>
-        <%= link_to provider_path(provider), class:"provider-card-link" do %>
-          <div class="provider-card flex items-center space-x-4 p-4 border rounded-lg mb-4 cursor-pointer">
-            <% if provider.profile_picture.attached? %>
-              <%= image_tag provider.profile_picture, class: "rounded-full w-12 h-12 object-cover" %>
-            <% else %>
-              <%= image_tag "default_profile_picture.svg", class: "rounded-full w-12 h-12 object-cover" %>
-            <% end %>
-            <div>
-              <h3><%= provider.user.name %></h3>
-              <p>Service: <%= provider.service_type %></p>
-              <p>Location: <%= provider.location %></p>
-              <p>Hourly Rate: <%= provider.hourly_rate %> RON</p>
-            </div>
+    <h2 class="text-4xl font-semibold mb-6">Browse Providers</h2>
+    <div class="flex flex-wrap justify-between gap-6 mb-8">
+      <!-- Filter by Category -->
+      <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+        <%= form_with url: providers_path, method: :get, local: true do %>
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-xl font-semibold mb-4">Filter by Category</h3>
+            <%= select_tag :category, options_for_select(@categories.keys, selected: params[:category]), 
+              prompt: "Select a Category", class: "form-select w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+            <%= hidden_field_tag :service_type, params[:service_type] %>
+            <%= hidden_field_tag :location, params[:location] %>
+            <%= submit_tag "Apply Filters", class: "w-full mt-4 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" %>
           </div>
         <% end %>
+      </div>
+
+      <!-- Filter by Service Type -->
+      <% if params[:category].present? %>
+        <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+          <%= form_with url: providers_path, method: :get, local: true do %>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <h3 class="text-xl font-semibold mb-4">Filter by Service Type</h3>
+              <%= select_tag :service_type, 
+                options_for_select(@categories[params[:category]], selected: params[:service_type]), 
+                prompt: "Select a Service Type", class: "form-select w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+              <%= hidden_field_tag :category, params[:category] %>
+              <%= hidden_field_tag :location, params[:location] %>
+              <%= submit_tag "Apply Filters", class: "w-full mt-4 py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Filter by Location -->
+      <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+        <%= form_with url: providers_path, method: :get, local: true do %>
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-xl font-semibold mb-4">Filter by Location</h3>
+            <%= select_tag :location, 
+              options_for_select(["Bucharest", "Cluj-Napoca", "Timisoara", "Iasi"], selected: params[:location]), 
+              prompt: "Select a Location", class: "form-select w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+            <%= hidden_field_tag :category, params[:category] %>
+            <%= hidden_field_tag :service_type, params[:service_type] %>
+            <%= submit_tag "Apply Filters", class: "w-full mt-4 py-3 px-4 bg-yellow-600 hover:bg-yellow-700 text-white font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Selected Filters Display -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold">Selected Filters</h3>
+      <div class="flex flex-wrap gap-4">
+        <% if params[:category].present? %>
+          <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg flex items-center">
+            <span><%= params[:category] %></span>
+            <%= link_to '✖', providers_path(service_type: params[:service_type], location: params[:location]), method: :delete, class: "ml-2 text-blue-600 hover:text-blue-800" %>
+          </div>
+        <% end %>
+        <% if params[:service_type].present? %>
+          <div class="bg-green-100 text-green-800 px-4 py-2 rounded-lg flex items-center">
+            <span><%= params[:service_type] %></span>
+            <%= link_to '✖', providers_path(category: params[:category], location: params[:location]), method: :delete, class: "ml-2 text-green-600 hover:text-green-800" %>
+          </div>
+        <% end %>
+        <% if params[:location].present? %>
+          <div class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg flex items-center">
+            <span><%= params[:location] %></span>
+            <%= link_to '✖', providers_path(category: params[:category], service_type: params[:service_type]), method: :delete, class: "ml-2 text-yellow-600 hover:text-yellow-800" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Providers List -->
+    <div id="providers-container">
+      <%= turbo_frame_tag "providers" do %>
+        <%= render partial: "providers_list", locals: { providers: @providers } %>
       <% end %>
     </div>
   <% end %>
 <% else %>
   <div class="text-center py-12">
-    <h1 class="text-3xl font-bold mb-4">Welcome to NearYou</h1>
+    <h1 class="text-3xl font-semibold mb-6">Welcome to NearYou</h1>
     <p class="text-lg mb-8">Find and book local service providers</p>
     <div class="space-x-4">
       <%= link_to "Sign In", new_user_session_path, 
-          class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+          class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" %>
       <%= link_to "Sign Up", new_user_registration_path, 
-          class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+          class: "bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" %>
     </div>
   </div>
 <% end %>
