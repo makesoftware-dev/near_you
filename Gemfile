@@ -45,7 +45,7 @@ gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 1.2"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -81,3 +81,4 @@ gem "httparty"
 gem "sidekiq"
 gem "noticed", "~> 2.4", ">= 2.4.3"
 gem "language_filter", "~> 0.3.01"
+gem "aws-sdk-s3", require: false
