@@ -89,6 +89,13 @@ class ProvidersController < ApplicationController
     end
   end
 
+  def purge_image
+    @provider = Provider.find(params[:id])
+    image = @provider.images.find(params[:image_id])
+    image.purge_later
+    redirect_back fallback_location: provider_path(@provider), notice: "Image deleted"
+  end
+
   def available_slots
     date = Date.parse(params[:date])
     day_of_week = date.strftime("%A")
