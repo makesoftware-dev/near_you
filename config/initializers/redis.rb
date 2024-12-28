@@ -1,5 +1,5 @@
-Redis.current = Redis.new(
-  url: ENV["REDIS_URL"],
-  ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+$redis = Redis.new(
+  host: ENV["REDIS_HOST"] || "localhost",
+  port: ENV["REDIS_PORT"] || 6379,
+  db: ENV["REDIS_DB"] || 0
 )
-Rails.logger.info "Redis connected: #{Redis.current.ping}"
