@@ -46,6 +46,7 @@ services:
     name: myapp-redis
     env: docker
     region: frankfurt # or oregon
+    plan: free
     repo: https://github.com/render-examples/redis.git
     numInstances: 1
     disk:
