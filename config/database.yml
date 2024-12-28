@@ -79,6 +79,6 @@ test:
 #
 production:
   <<: *default
-  database: near_you_production
+  url: <%= ENV["DATABASE_URL"] %>
   username: near_you
   password: <%= ENV["NEAR_YOU_DATABASE_PASSWORD"] %>
