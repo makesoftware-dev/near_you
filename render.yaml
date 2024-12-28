@@ -6,7 +6,7 @@ services:
     plan: free
     numInstances: 1
     buildCommand: ./bin/render-build.sh
-    startCommand: REDIS_URL="redis://${REDIS_HOST}" bundle exec puma -C config/puma.rb
+    startCommand: REDIS_URL="redis://${REDIS_HOST}:${REDIS_PORT}" bundle exec puma -C config/puma.rb
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -16,7 +16,12 @@ services:
         fromService:
           name: myapp-redis
           type: redis
-          property: hostport
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          name: myapp-redis
+          type: redis
+          property: port
       - key: RAILS_MASTER_KEY
         sync: false
       - key: AWS_ACCESS_KEY_ID
@@ -38,7 +43,7 @@ services:
     region: frankfurt # or oregon
     plan: free
     buildCommand: bundle install && bundle exec rake assets:precompile
-    startCommand: REDIS_URL="redis://${REDIS_HOST}" bundle exec sidekiq -e production
+    startCommand: REDIS_URL="redis://${REDIS_HOST}:${REDIS_PORT}" bundle exec sidekiq -e production
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -48,7 +53,12 @@ services:
         fromService:
           name: myapp-redis
           type: redis
-          property: hostport
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          name: myapp-redis
+          type: redis
+          property: port
       - key: RAILS_MASTER_KEY
         sync: false
       - key: AWS_ACCESS_KEY_ID
