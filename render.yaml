@@ -47,7 +47,7 @@ services:
       - key: REDIS_HOST
         fromService:
           name: myapp-redis
-          type: pserv
+          type: redis
           property: hostport
       - key: RAILS_MASTER_KEY
         sync: false
@@ -68,6 +68,7 @@ services:
     name: myapp-redis
     region: frankfurt # or oregon
     plan: free
+    ipAllowList: []
 
 databases:
   - name: myapp-db
