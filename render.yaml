@@ -21,6 +21,18 @@ services:
           property: hostport
       - key: RAILS_MASTER_KEY
         sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_REGION
+        sync: false
+      - key: AWS_BUCKET_NAME
+        sync: false
+      - key: STRIPE_PUBLIC_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
 
   - type: worker
     name: myapp-sidekiq
@@ -41,6 +53,18 @@ services:
           property: hostport
       - key: RAILS_MASTER_KEY
         sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_REGION
+        sync: false
+      - key: AWS_BUCKET_NAME
+        sync: false
+      - key: STRIPE_PUBLIC_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
 
   - type: pserv
     name: myapp-redis
@@ -49,10 +73,6 @@ services:
     plan: free
     repo: https://github.com/render-examples/redis.git
     numInstances: 1
-    disk:
-      name: myapp-redis-data
-      mountPath: /var/lib/redis
-      sizeGB: 1
 
 databases:
   - name: myapp-db
