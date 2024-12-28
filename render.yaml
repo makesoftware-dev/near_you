@@ -1,6 +1,7 @@
 services:
   # PostgreSQL Database Service
-  - name: postgres
+  - type: database
+    name: postgres
     ipAllowList: []  # Internal connections only
 
   # Redis Service for Sidekiq
