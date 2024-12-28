@@ -10,16 +10,16 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: myapp-db
+          name: near-you-db
           property: connectionString
       - key: REDIS_HOST
         fromService:
-          name: myapp-redis
+          name: near-you-redis
           type: redis
           property: host
       - key: REDIS_PORT
         fromService:
-          name: myapp-redis
+          name: near-you-redis
           type: redis
           property: port
       - key: RAILS_MASTER_KEY
@@ -38,12 +38,12 @@ services:
         sync: false
 
   - type: redis
-    name: myapp-redis
+    name: near-you-redis
     region: frankfurt # or oregon
     plan: free
     ipAllowList: []
 
 databases:
-  - name: myapp-db
+  - name: near-you-db
     plan: free
     region: frankfurt
