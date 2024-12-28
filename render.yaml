@@ -15,7 +15,7 @@ services:
       - key: REDIS_HOST
         fromService:
           name: myapp-redis
-          type: pserv
+          type: redis
           property: hostport
       - key: RAILS_MASTER_KEY
         sync: false
@@ -64,12 +64,10 @@ services:
       - key: STRIPE_SECRET_KEY
         sync: false
 
-  - type: pserv
+  - type: redis
     name: myapp-redis
-    env: docker
     region: frankfurt # or oregon
     plan: free
-    repo: https://github.com/render-examples/redis.git
     numInstances: 1
 
 databases:
