@@ -68,7 +68,6 @@ services:
     name: myapp-redis
     region: frankfurt # or oregon
     plan: free
-    numInstances: 1
 
 databases:
   - name: myapp-db
