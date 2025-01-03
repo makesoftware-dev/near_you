@@ -79,6 +79,6 @@ gem "pundit"
 gem "avo"
 gem "httparty"
 gem "sidekiq"
-gem "noticed", "~> 2.4", ">= 2.4.3"
+gem 'noticed', '~> 2.5'
 gem "language_filter", "~> 0.3.01"
 gem "aws-sdk-s3", require: false
