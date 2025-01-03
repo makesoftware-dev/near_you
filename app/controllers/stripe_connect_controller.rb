@@ -8,7 +8,7 @@ class StripeConnectController < ApplicationController
     # Create a new Stripe Connect account if one doesn't exist
     create_stripe_account unless @provider.stripe_account_id
 
-    redirect_url = Rails.env.production? ? NEAR_YOU_URL : ngrok_url
+    redirect_url = Rails.env.production? ? NEAR_YOU_URL : NGROK_URL
     # Generate the Stripe onboarding link
     account_link = Stripe::AccountLink.create({
       account: @provider.stripe_account_id,
