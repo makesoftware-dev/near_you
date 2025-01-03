@@ -1,5 +1,5 @@
-$redis = Redis.new(
-  host: ENV["REDIS_HOST"] || "localhost",
-  port: ENV["REDIS_PORT"] || 6379,
-  db: ENV["REDIS_DB"] || 0
-)
+$redis = if Rails.env.production?
+  Redis.new(url: ENV["REDIS_URL"])
+else
+  Redis.new(url: "redis://localhost:6379")
+end
