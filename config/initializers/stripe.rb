@@ -4,3 +4,6 @@ Rails.configuration.stripe = {
 }
 
 Stripe.api_key = Rails.configuration.stripe[:secret_key]
+
+# Log the API key for debugging (remove this in production)
+Rails.logger.info("Stripe API Key: #{Stripe.api_key}")
