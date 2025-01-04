@@ -97,15 +97,16 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: "https://near-you-nf5o.onrender.com",
-    user_name: Rails.application.credentials.dig(:google_smtp, :email),
-    password: Rails.application.credentials.dig(:google_smtp, :password),
-    authentication: "plain",
-    enable_starttls_auto: true
-  }
-  config.action_mailer.default_url_options = {host: "https://near-you-nf5o.onrender.com"}
+  #Uncomment this when you want to use sidekiq for background job
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address: "smtp.gmail.com",
+  #   port: 587,
+  #   domain: "https://near-you-nf5o.onrender.com",
+  #   user_name: Rails.application.credentials.dig(:google_smtp, :email),
+  #   password: Rails.application.credentials.dig(:google_smtp, :password),
+  #   authentication: "plain",
+  #   enable_starttls_auto: true
+  # }
+  # config.action_mailer.default_url_options = {host: "https://near-you-nf5o.onrender.com"}
 end
