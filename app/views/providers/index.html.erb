@@ -23,7 +23,7 @@
             <div class="bg-white p-6 rounded-lg shadow-lg">
               <h3 class="text-xl font-semibold mb-4">Filter by Service Type</h3>
               <%= select_tag :service_type, 
-                options_for_select(@categories[params[:category]], selected: params[:service_type]), 
+                options_for_select(@categories[params[:category]] || [], selected: params[:service_type]), 
                 prompt: "Select a Service Type", class: "form-select w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" %>
               <%= hidden_field_tag :category, params[:category] %>
               <%= hidden_field_tag :location, params[:location] %>
