@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   root "providers#index"
 
   resources :providers, only: [:index, :show, :new, :create, :edit, :update] do
+    collection do
+      get :service_types
+    end
     resources :availabilities, only: [:index, :create, :update, :destroy]
     get "available_slots", on: :member
     resources :appointments, only: [:create]

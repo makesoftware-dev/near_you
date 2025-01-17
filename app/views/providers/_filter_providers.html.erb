@@ -1,0 +1,40 @@
+<div class="relative" data-controller="filters">
+  <button id="filter-button" 
+          class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          data-action="click->filters#toggle">
+    Filters
+  </button>
+  <div id="filter-dropdown" class="hidden absolute mt-2 w-64 bg-white rounded-lg shadow-lg z-20">
+    <%= form_with url: providers_path, method: :get, local: true, id: "filters-form" do %>
+      <div class="p-4 space-y-4">
+        <!-- Filter by Category -->
+        <div>
+          <label for="category" class="block text-gray-700 font-medium">Category</label>
+          <%= select_tag :category, options_for_select(@categories.keys, selected: params[:category]), 
+            prompt: "Select a Category", class: "form-select w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500", data: { action: "change->filters#fetchServiceTypes" } %>
+        </div>
+        <!-- Filter by Service Type -->
+        <turbo-frame id="service_type_frame">
+          <div>
+            <label for="service_type" id="service_type" class="block text-gray-700 font-medium">Service Type</label>
+            <%= select_tag :service_type, 
+              options_for_select(@service_types || [], selected: params[:service_type]), 
+              prompt: "Select a Service Type", class: "form-select w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" %>
+          </div>
+        </turbo-frame>
+        <!-- Filter by Location -->
+        <div>
+          <label for="location" class="block text-gray-700 font-medium">Location</label>
+          <%= select_tag :location, 
+            options_for_select(["Bucharest", "Cluj-Napoca", "Timisoara", "Iasi"], selected: params[:location]), 
+            prompt: "Select a Location", class: "form-select w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" %>
+        </div>
+        <!-- Filter Actions -->
+        <div class="flex justify-between items-center mt-4">
+          <%= submit_tag "Apply Filters", class: "px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500" %>
+          <%= link_to "Clear All", providers_path, class: "text-red-600 hover:underline text-sm" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

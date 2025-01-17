@@ -25,8 +25,20 @@ class ProvidersController < ApplicationController
 
       respond_to do |format|
         format.html # Regular rendering
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("providers", partial: "providers_list", locals: {providers: @providers}) }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("providers", partial: "providers_list", locals: {providers: @providers})
+          ]
+        end
       end
+    end
+  end
+
+  def service_types
+    @service_types = Provider.categories[params[:category]] || []
+
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 
