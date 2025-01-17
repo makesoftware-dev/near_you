@@ -1,0 +1,12 @@
+<turbo-stream target="service_type_frame" action="replace">
+  <template>
+  <turbo_frame id= "service_type_frame">
+    <div>
+      <label for="service_type" class="block text-gray-700 font-medium">Service Type</label>
+      <%= select_tag :service_type, 
+        options_for_select(@service_types, selected: params[:service_type]), 
+        prompt: "Select a Service Type", class: "form-select w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" %>
+    </div>
+    </turbo_frame>
+  </template>
+</turbo-stream>
