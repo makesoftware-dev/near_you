@@ -5,21 +5,3 @@
 import { application } from "controllers/application"
 import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
 eagerLoadControllersFrom("controllers", application)
-
-import AppointmentCalendarController from "./appointment_calendar_controller"
-application.register("appointment-calendar", AppointmentCalendarController)
-
-import CopyController from "./copy_controller"
-application.register("copy", CopyController)
-
-import DropdownController from "./dropdown_controller"
-application.register("dropdown", DropdownController)
-
-import FiltersController from "./filters_controller"
-application.register("filters", FiltersController)
-
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
-
-import NotificationsController from "./notifications_controller"
-application.register("notifications", NotificationsController)
