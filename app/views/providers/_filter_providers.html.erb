@@ -1,27 +1,19 @@
-<div class="relative" data-controller="filters">
+<div class="relative" data-controller="category-service">
   <button id="filter-button" 
           class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          data-action="click->filters#toggle">
+          data-action="click->category-service#toggle">
     Filters
   </button>
   <div id="filter-dropdown" class="hidden absolute mt-2 w-64 bg-white rounded-lg shadow-lg z-20">
-    <%= form_with url: providers_path, method: :get, local: true, id: "filters-form" do %>
+    <%= form_with url: providers_path, method: :get, local: true, id: "filters-form" do |form| %>
       <div class="p-4 space-y-4">
         <!-- Filter by Category -->
-        <div>
-          <label for="category" class="block text-gray-700 font-medium">Category</label>
-          <%= select_tag :category, options_for_select(@categories.keys, selected: params[:category]), 
-            prompt: "Select a Category", class: "form-select w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500", data: { action: "change->filters#fetchServiceTypes" } %>
-        </div>
-        <!-- Filter by Service Type -->
-        <turbo-frame id="service_type_frame">
-          <div>
-            <label for="service_type" id="service_type" class="block text-gray-700 font-medium">Service Type</label>
-            <%= select_tag :service_type, 
-              options_for_select(@service_types || [], selected: params[:service_type]), 
-              prompt: "Select a Service Type", class: "form-select w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" %>
-          </div>
-        </turbo-frame>
+        <%= render "shared/category_service_type",
+          form: form,
+          frame_id: "filter_service_type_frame",
+          selected_category: params[:category],
+          selected_service_type: params[:service_type],
+          service_types: @service_types %>
         <!-- Filter by Location -->
         <div>
           <label for="location" class="block text-gray-700 font-medium">Location</label>

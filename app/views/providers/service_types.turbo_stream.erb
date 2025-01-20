@@ -1,12 +1,15 @@
-<turbo-stream target="service_type_frame" action="replace">
+<turbo-stream target="<%= @frame_id %>" action="replace">
   <template>
-  <turbo_frame id= "service_type_frame">
-    <div>
-      <label for="service_type" class="block text-gray-700 font-medium">Service Type</label>
-      <%= select_tag :service_type, 
-        options_for_select(@service_types, selected: params[:service_type]), 
-        prompt: "Select a Service Type", class: "form-select w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" %>
-    </div>
-    </turbo_frame>
+    <turbo-frame id="<%= @frame_id %>">
+      <div>
+        <label for="service_type" class="block text-sm font-medium text-gray-700 mt-4">Service Type</label>
+        <select name="service_type" id="service_type" class="form-select w-full mt-1 rounded-md border-gray-300 shadow-sm">
+          <option value="">Select a Service Type</option>
+          <% @service_types.each do |service_type| %>
+            <option value="<%= service_type %>"><%= service_type %></option>
+          <% end %>
+        </select>
+      </div>
+    </turbo-frame>
   </template>
 </turbo-stream>
