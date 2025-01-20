@@ -35,7 +35,12 @@ class ProvidersController < ApplicationController
   end
 
   def service_types
+    Rails.logger.info "Category param: #{params[:category]}"
     @service_types = Provider.categories[params[:category]] || []
+    Rails.logger.info "Fetched service types: #{@service_types.inspect}"
+
+    @frame_id = params[:frame_id]
+    Rails.logger.info "Frame ID: #{params[:frame_id]}"
 
     respond_to do |format|
       format.turbo_stream

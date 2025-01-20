@@ -6,18 +6,12 @@
       <%= f.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
     </div>
 
-    <div>
-      <%= f.label :category, "Category", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.select :category, Provider.categories.keys, 
-          { prompt: "Select a category" }, 
-          class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
-    </div>
-    <div>
-      <%= f.label :service_type, class: "block text-sm font-medium text-gray-700" %>
-      <%= f.select :service_type, Provider.service_types.keys, 
-          { prompt: "Select a service type" }, 
-          class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
-    </div>
+    <%= render "shared/category_service_type",
+      form: f,
+      frame_id: "edit_service_type_frame",
+      selected_category: @provider.category,
+      selected_service_type: @provider.service_type,
+      service_types: Provider.categories[@provider.category] %>
     <div>
       <%= f.label :experience, "Years of Experience", class: "block text-sm font-medium text-gray-700" %>
       <%= f.number_field :experience, min: 0, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>

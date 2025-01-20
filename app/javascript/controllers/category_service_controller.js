@@ -1,16 +1,17 @@
-// app/javascript/controllers/filters_controller.js
+// app/javascript/controllers/category_service_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
+  static targets = ["categorySelect", "serviceSelect"]
+
   connect() {
-    console.log("Filters controller connected!");
+    console.log("CategoryServiceController connected!");
   }
 
   toggle(event) {
-    // Find the dropdown element
+    console.log("Toggle dropdown");
     const dropdown = this.element.querySelector("#filter-dropdown");
     if (dropdown) {
-      // Toggle visibility
       dropdown.classList.toggle("hidden");
     } else {
       console.error("Dropdown not found!");
@@ -19,8 +20,9 @@ export default class extends Controller {
 
   fetchServiceTypes(event) {
     const category = event.target.value;
+    const frameId = this.element.dataset.categoryServiceFrameIdValue;
     if (category) {
-      fetch(`/providers/service_types?category=${encodeURIComponent(category)}`, {
+      fetch(`/providers/service_types?category=${encodeURIComponent(category)}&frame_id=${frameId}`, {
         method: "GET",
         headers: { Accept: "text/vnd.turbo-stream.html" }
       })
@@ -28,7 +30,8 @@ export default class extends Controller {
         .then(html => {Turbo.renderStreamMessage(html);})
         .catch(error => console.error("Error fetching service types:", error));
     } else {
-      const serviceTypeFrame = document.getElementById("service_type_frame");
+      console.warn("No category selected, resetting dropdown.");
+      const serviceTypeFrame = document.getElementById(frameId);
       if (serviceTypeFrame) {
         serviceTypeFrame.innerHTML = `
           <div>
