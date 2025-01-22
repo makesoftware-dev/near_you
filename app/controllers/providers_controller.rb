@@ -12,28 +12,13 @@ class ProvidersController < ApplicationController
         redirect_to new_provider_path, alert: "Please complete your provider profile"
       end
     else
-      # Get distinct service types for dropdown and categories from Provider model
       @categories = Provider.categories
 
-      if params[:category].present?
-        @providers = Provider.where(category: params[:category])
-        @service_types = Provider.categories[params[:category]]
-      else
-        @providers = Provider.all
-        @service_types = Provider.distinct.pluck(:service_type)
-      end
+      @providers = Provider.includes(:user)
 
-      # Prepare filters hash for dynamic querying
-      filters = {}
-      filters[:category] = params[:category] if params[:category].present?
-      filters[:service_type] = params[:service_type] if params[:service_type].present?
-      filters[:location] = params[:location] if params[:location].present?
+      @providers = apply_filters(@providers, params)
 
-      # Apply filters if any, using safe query methods
-      @providers = @providers.where(filters) if filters.any?
-
-      # Eager load user association to optimize queries
-      @providers = @providers.includes(:user)
+      @service_types = params[:category].present? ? Provider.categories[params[:category]] : Provider.distinct.pluck(:service_type)
 
       respond_to do |format|
         format.html # Regular rendering
@@ -179,6 +164,19 @@ class ProvidersController < ApplicationController
     end
 
     slots
+  end
+
+  def apply_filters(scope, params)
+    scope = scope.where(category: params[:category]) if params[:category].present?
+
+    if params[:service_type].present?
+      scope = scope.where(service_type: params[:service_type])
+    end
+
+    if params[:location].present? && params[:location].strip.present?
+      scope = scope.where("lower(location) LIKE ?", "%#{params[:location].downcase}%")
+    end
+    scope
   end
 
   def set_provider
