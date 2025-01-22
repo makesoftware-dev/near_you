@@ -12,23 +12,35 @@ class ProvidersController < ApplicationController
         redirect_to new_provider_path, alert: "Please complete your provider profile"
       end
     else
+      # Get distinct service types for dropdown and categories from Provider model
       @categories = Provider.categories
-      @service_types = Provider.distinct.service_types.values
-      @providers = Provider.includes(:user)
 
+      if params[:category].present?
+        @providers = Provider.where(category: params[:category])
+        @service_types = Provider.categories[params[:category]]
+      else
+        @providers = Provider.all
+        @service_types = Provider.distinct.pluck(:service_type)
+      end
+
+      # Prepare filters hash for dynamic querying
       filters = {}
-      filters[:service_type] = @categories[params[:category]] if params[:category].present?
+      filters[:category] = params[:category] if params[:category].present?
       filters[:service_type] = params[:service_type] if params[:service_type].present?
       filters[:location] = params[:location] if params[:location].present?
 
+      # Apply filters if any, using safe query methods
       @providers = @providers.where(filters) if filters.any?
+
+      # Eager load user association to optimize queries
+      @providers = @providers.includes(:user)
 
       respond_to do |format|
         format.html # Regular rendering
         format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace("providers", partial: "providers_list", locals: {providers: @providers})
-          ]
+          render turbo_stream: turbo_stream.replace("providers",
+            partial: "providers_list",
+            locals: {providers: @providers})
         end
       end
     end
