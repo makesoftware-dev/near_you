@@ -80,20 +80,20 @@
               class: "mt-2 mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
               data: { turbo: false } %>
         </div>
-      <% elsif @provider.stripe_status == "incomplete" %>
-        <div class="text-yellow-600">
-          Your Stripe account is incomplete. Pending details:
-          <ul>
-            <% Array(@provider.requirements_due).each do |requirement| %>
-              <li><%= requirement.humanize %></li>
-            <% end %>
-          </ul>
-          <%= button_to "Complete Stripe Setup", 
-                  stripe_connect_index_path(provider_id: @provider.id),
-                  method: :post, 
-                  class: "mt-2 mb-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded",
-                  data: { turbo: false } %>
-        </div>
+        <%# Please uncomment this line above wen you want to put in on production %>
+      <%# <% elsif @provider.stripe_status == "incomplete" %>
+        <%# <div class="text-yellow-600"> %>
+          <%# <ul> %>
+            <%# <%if @provider.requirements_due.present?%>
+            <%# <li>Your Stripe account is almost complete, please upload your business representative document.</li> %>
+            <%# <%end%>
+          <%# </ul> %>
+          <%# <%= button_to "Complete Stripe Setup",  %>
+                  <%# stripe_connect_index_path(provider_id: @provider.id), %>
+                  <%# method: :post,  %>
+                  <%# class: "mt-2 mb-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded", %>
+                  <%# data: { turbo: false } %>
+        <%# </div> %>
       <% end %>
     </div>
   <% end %>
