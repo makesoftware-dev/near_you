@@ -1,5 +1,5 @@
 class AppointmentConfirmationNotifier < Noticed::Event
-  deliver_by :database
+  deliver_by :email, mailer: "NotificationMailer"
 
   def message_provider
     "New appointment confirmed with #{params[:appointment].user.name} for #{formatted_time}"

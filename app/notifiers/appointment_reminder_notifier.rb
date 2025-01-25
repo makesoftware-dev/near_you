@@ -1,5 +1,5 @@
 class AppointmentReminderNotifier < Noticed::Event
-  deliver_by :database
+  deliver_by :email, mailer: "NotificationMailer"
 
   def message_provider
     "Upcoming appointment with #{params[:appointment].user.name} in 1 hour at #{params[:appointment].start_time.strftime("%I:%M %p")}"

@@ -1,5 +1,5 @@
 class NewReviewNotifier < Noticed::Event
-  deliver_by :database
+  deliver_by :email, mailer: "NotificationMailer"
 
   def message_provider
     "You have received a new review from #{params[:review].user.name}."
