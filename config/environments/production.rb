@@ -102,8 +102,8 @@ Rails.application.configure do
     address: "smtp.gmail.com",
     port: 587,
     domain: "https://near-you-nf5o.onrender.com",
-    user_name: Rails.application.credentials.dig(:google_smtp, :email),
-    password: Rails.application.credentials.dig(:google_smtp, :password),
+    user_name: Rails.application.credentials.dig(:google_smtp, :email) || ENV["SMTP_USERNAME"],
+    password: Rails.application.credentials.dig(:google_smtp, :password) || ENV["SMTP_PASSWORD"],
     authentication: "plain",
     enable_starttls_auto: true
   }
