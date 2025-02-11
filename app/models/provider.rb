@@ -10,9 +10,9 @@ class Provider < ApplicationRecord
 
   validates :user_id, uniqueness: true, presence: true
 
-  enum stripe_status: {incomplete: "incomplete", active: "active"}
+  enum :stripe_status, {incomplete: "incomplete", active: "active"}
 
-  enum service_type: {
+  enum :service_type, {
     # Health & Wellness
     masseur: "Masseur",
     personal_trainer: "Personal Trainer",
