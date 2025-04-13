@@ -1,24 +1,52 @@
-# README
+# Near You 🌍
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+**Find and book trusted local service providers — effortlessly.**
 
-Things you may want to cover:
+Near You is a full-stack web application built with **Ruby on Rails**, designed to help users easily discover, connect with, and book local service providers in their area. Whether you're looking for a nearby electrician, hair stylist, or personal trainer — Near You streamlines the entire experience from discovery to booking.
 
-* Ruby version
+---
 
-* System dependencies
+## ✨ Key Features
 
-* Configuration
+- ✅ **User & Provider Profiles**  
+  Including image uploads and personalized bios
 
-* Database creation
+- 📍 **Location-Based Search**  
+  Find nearby services based on category and your location
 
-* Database initialization
+- 📅 **Appointment Booking System**  
+  Real-time availability management for providers
 
-* How to run the test suite
+- 💳 **Stripe Payments Integration**  
+  Secure online payments with support for multiple services
 
-* Services (job queues, cache servers, search engines, etc.)
+- 🌐 **Google Maps Integration**  
+  View provider locations and get directions
 
-* Deployment instructions
+- ⭐ **Review System with Language Filters**  
+  Leave and read reviews, filtered by preferred language
 
-* ...
+- 📩 **Notifications**  
+  Email and in-app alerts for bookings and activity
+
+- ☁️ **Cloud Storage with AWS S3**  
+  For storing user-uploaded profile images
+
+- ⚙️ **Robust Backend Stack**  
+  PostgreSQL, Redis, Sidekiq, Turbo/Hotwire
+
+---
+
+## 🚀 Tech Stack
+
+| Area         | Tech Stack                            |
+|--------------|----------------------------------------|
+| Backend      | Ruby on Rails, PostgreSQL, Sidekiq     |
+| Frontend     | Hotwire (Turbo + Stimulus), SCSS       |
+| Payments     | Stripe                                 |
+| Storage      | AWS S3 (Active Storage)                |
+| Geolocation  | Google Maps API                        |
+| Background Jobs | Redis + Sidekiq                     |
+| Deployment   | DigitalOcean (in progress)             |
+
+
