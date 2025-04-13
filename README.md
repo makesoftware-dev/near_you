@@ -37,6 +37,12 @@ Near You is a full-stack web application built with **Ruby on Rails**, designed 
 
 ---
 
+## 🎥 Demo
+
+Watch the app in action:
+
+[▶️ Click to view demo](public/demo.mov)
+
 ## 🚀 Tech Stack
 
 | Area         | Tech Stack                            |
