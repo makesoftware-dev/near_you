@@ -42,7 +42,7 @@ Near You is a full-stack web application built with **Ruby on Rails**, designed 
 | Area         | Tech Stack                            |
 |--------------|----------------------------------------|
 | Backend      | Ruby on Rails, PostgreSQL, Sidekiq     |
-| Frontend     | Hotwire (Turbo + Stimulus), SCSS       |
+| Frontend     | Hotwire (Turbo + Stimulus), tailwindcss |
 | Payments     | Stripe                                 |
 | Storage      | AWS S3 (Active Storage)                |
 | Geolocation  | Google Maps API                        |
